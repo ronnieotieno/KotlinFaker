@@ -17,7 +17,7 @@ val gson: Gson = GsonBuilder().setPrettyPrinting().create()
 
 fun main() {
     val imageResponse = generateData(ImageResponse::class.java)
-    println(imageResponse.images[0].users)
+    println(imageResponse)
 }
 
  inline fun <reified T> generateData(clazz: Class<T>): T {
