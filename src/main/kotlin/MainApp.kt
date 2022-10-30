@@ -127,13 +127,13 @@ private fun randomString(): String = List(16) {
 
 fun saveToFile(json: JsonObject) {
     val fileName = "generatedJsonFile.json"
-    val newFile = File(fileName)
+    val file = File(fileName)
 
     val parser = JsonParser.parseString(json.toString())
     val prettyJsonString = gson.toJson(parser)
 
-    if (newFile.createNewFile()) {
-        newFile.createNewFile()
+    if (file.createNewFile()) {
+        file.createNewFile()
     }
 
     try {
