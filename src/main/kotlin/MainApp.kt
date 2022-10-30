@@ -16,15 +16,16 @@ import kotlin.random.asJavaRandom
 val gson: Gson = GsonBuilder().setPrettyPrinting().create()
 
 fun main() {
-    val imageResponse = generateData(ImageResponse::class.java)
+    val imageResponse = ImageResponse::class.java.generateFakeData()
     println(imageResponse)
 }
 
- inline fun <reified T> generateData(clazz: Class<T>): T {
-    val  json = generateDataFromClass(clazz)
+inline fun <reified T> Class<T>.generateFakeData(): T {
+    val  json = generateDataFromClass(this)
     saveToFile(json)
     return gson.fromJson(json, T::class.java)
 }
+
 fun <T> generateDataFromClass(clazz: Class<T>): JsonObject {
     val json = JsonObject()
     val random = Random.asJavaRandom()
