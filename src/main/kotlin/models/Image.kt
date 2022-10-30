@@ -13,5 +13,9 @@ data class Image(
     val user_id: Int,
     val views: Int,
     val users: List<String>,
+    val userIds: List<Int>,
+    val shorts: List<Short>,
+    val longs: List<Long>,
+    val booleans: List<Boolean>,
     var searchTerm: String? = null
 )

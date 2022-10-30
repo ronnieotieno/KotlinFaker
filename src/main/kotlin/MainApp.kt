@@ -8,7 +8,6 @@ import java.io.File
 import java.io.FileWriter
 import java.io.IOException
 import java.lang.reflect.ParameterizedType
-import java.sql.Timestamp
 import kotlin.random.Random
 import kotlin.random.asJavaRandom
 
@@ -37,7 +36,7 @@ fun <T> generateDataFromClass(clazz: Class<T>): JsonObject {
                 json.addProperty(key, "RandomString" + (1..1000).random())
             }
             parameter.returnType.isAssignableFrom(Int::class.java) -> {
-                json.addProperty(key, random.nextInt())
+                json.addProperty(key, (1..1000).random())
             }
             parameter.returnType.isAssignableFrom(Short::class.java) -> {
                 json.addProperty(key, (1..1000).random())
@@ -54,10 +53,7 @@ fun <T> generateDataFromClass(clazz: Class<T>): JsonObject {
             parameter.returnType.isAssignableFrom(Boolean::class.java) -> {
                 json.addProperty(key, random.nextBoolean())
             }
-            parameter.returnType.isAssignableFrom(Timestamp::class.java) -> {
-                json.addProperty(key, Timestamp(System.currentTimeMillis()).toString())
-            }
-            parameter.returnType is Class && !parameter.returnType.isAssignableFrom(List::class.java) -> {
+            !parameter.returnType.typeName.contains("java.lang") && !parameter.returnType.isAssignableFrom(List::class.java) -> {
                 val data = generateDataFromClass(parameter.returnType)
                 json.add(key, data)
             }
@@ -65,15 +61,39 @@ fun <T> generateDataFromClass(clazz: Class<T>): JsonObject {
             ((parameter.genericReturnType) as ParameterizedType).rawType == List::class.java -> {
                 val className = ((parameter.genericReturnType) as ParameterizedType).actualTypeArguments[0].typeName
                 val clazzList = mutableListOf<Any>()
-                if (className == "java.lang.String") {
-                    (0..5).forEach { _ ->
-                        clazzList.add("RandomString" + (1..1000).random())
+                println("Class Name  $className")
+                when (className) {
+                    "java.lang.String" -> {
+                        (0..5).forEach { _ ->
+                            clazzList.add("RandomString" + (1..1000).random())
+                        }
                     }
-                } else {
-                    val clazz2 = Class.forName(className)
-                    (0..5).forEach { _ ->
-                        val data = generateDataFromClass(clazz2)
-                        clazzList.add(data)
+                    "java.lang.Integer" -> {
+                        (0..5).forEach { _ ->
+                            clazzList.add((1..1000).random())
+                        }
+                    }
+                    "java.lang.Short" -> {
+                        (0..5).forEach { _ ->
+                            clazzList.add((1..1000).random())
+                        }
+                    }
+                    "java.lang.Long" -> {
+                        (0..5).forEach { _ ->
+                            clazzList.add(random.nextLong())
+                        }
+                    }
+                    "java.lang.Boolean" -> {
+                        (0..5).forEach { _ ->
+                            clazzList.add(random.nextBoolean())
+                        }
+                    }
+                    else -> {
+                        val clazz2 = Class.forName(className)
+                        (0..5).forEach { _ ->
+                            val data = generateDataFromClass(clazz2)
+                            clazzList.add(data)
+                        }
                     }
                 }
                 val element = gson.toJsonTree(clazzList, object : TypeToken<List<*>>() {}.type)
