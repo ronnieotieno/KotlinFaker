@@ -53,6 +53,9 @@ fun <T> generateDataFromClass(clazz: Class<T>): JsonObject {
             parameter.returnType.isAssignableFrom(Boolean::class.java) -> {
                 json.addProperty(key, random.nextBoolean())
             }
+            parameter.returnType.isAssignableFrom(Char::class.java) -> {
+                json.addProperty(key, ('A'..'Z').random())
+            }
             !parameter.returnType.typeName.contains("java.lang") && !parameter.returnType.isAssignableFrom(List::class.java) -> {
                 val data = generateDataFromClass(parameter.returnType)
                 json.add(key, data)
@@ -86,6 +89,21 @@ fun <T> generateDataFromClass(clazz: Class<T>): JsonObject {
                     "java.lang.Boolean" -> {
                         (0..5).forEach { _ ->
                             clazzList.add(random.nextBoolean())
+                        }
+                    }
+                    "java.lang.Character" -> {
+                        (0..5).forEach { _ ->
+                            clazzList.add(('A'..'Z').random())
+                        }
+                    }
+                    "java.lang.Double" -> {
+                        (0..5).forEach { _ ->
+                            clazzList.add(random.nextDouble())
+                        }
+                    }
+                    "java.lang.Float" -> {
+                        (0..5).forEach { _ ->
+                            clazzList.add(random.nextFloat())
                         }
                     }
                     else -> {
