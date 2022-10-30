@@ -11,7 +11,6 @@ import java.lang.reflect.ParameterizedType
 import kotlin.random.Random
 import kotlin.random.asJavaRandom
 
-
 val gson: Gson = GsonBuilder().setPrettyPrinting().create()
 
 fun main() {
@@ -20,7 +19,7 @@ fun main() {
 }
 
 inline fun <reified T> Class<T>.generateFakeData(): T {
-    val  json = generateDataFromClass(this)
+    val json = generateDataFromClass(this)
     saveToFile(json)
     return gson.fromJson(json, T::class.java)
 }
@@ -126,7 +125,7 @@ private fun randomString(): String = List(16) {
     (('a'..'z') + ('A'..'Z')).random()
 }.joinToString("")
 
-fun saveToFile(json:JsonObject) {
+fun saveToFile(json: JsonObject) {
     val fileName = "generatedJsonFile.json"
     val newFile = File(fileName)
 
