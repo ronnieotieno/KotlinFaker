@@ -33,7 +33,7 @@ fun <T> generateDataFromClass(clazz: Class<T>): JsonObject {
         val key = parameter.name.removePrefix("get").replaceFirstChar { char -> char.lowercaseChar() }
         when {
             parameter.returnType.isAssignableFrom(String::class.java) -> {
-                json.addProperty(key, "RandomString" + (1..1000).random())
+                json.addProperty(key, randomString())
             }
             parameter.returnType.isAssignableFrom(Int::class.java) -> {
                 json.addProperty(key, (1..1000).random())
@@ -68,7 +68,7 @@ fun <T> generateDataFromClass(clazz: Class<T>): JsonObject {
                 when (className) {
                     "java.lang.String" -> {
                         (0..5).forEach { _ ->
-                            clazzList.add("RandomString" + (1..1000).random())
+                            clazzList.add(randomString())
                         }
                     }
                     "java.lang.Integer" -> {
@@ -121,6 +121,10 @@ fun <T> generateDataFromClass(clazz: Class<T>): JsonObject {
     }
     return json
 }
+
+private fun randomString(): String = List(16) {
+    (('a'..'z') + ('A'..'Z')).random()
+}.joinToString("")
 
 fun saveToFile(json:JsonObject) {
     val fileName = "generatedJsonFile.json"
