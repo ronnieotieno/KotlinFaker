@@ -137,9 +137,9 @@ fun saveToFile(json: JsonObject) {
     }
 
     try {
-        val myWriter = FileWriter(fileName)
-        myWriter.write(prettyJsonString)
-        myWriter.close()
+        val fileWriter = FileWriter(fileName)
+        fileWriter.write(prettyJsonString)
+        fileWriter.close()
         println("Successfully wrote to the file.")
     } catch (e: IOException) {
         println("An error occurred.")
