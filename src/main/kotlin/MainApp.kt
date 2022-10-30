@@ -84,7 +84,8 @@ fun <T> generateDataFromClass(clazz: Class<T>): JsonObject {
 }
 
 fun saveToFile(json:JsonObject) {
-    val newFile = File("jsonFile.json")
+    val fileName = "generatedJsonFile.json"
+    val newFile = File(fileName)
 
     val parser = JsonParser.parseString(json.toString())
     val prettyJsonString = gson.toJson(parser)
@@ -94,7 +95,7 @@ fun saveToFile(json:JsonObject) {
     }
 
     try {
-        val myWriter = FileWriter("jsonFile.json")
+        val myWriter = FileWriter(fileName)
         myWriter.write(prettyJsonString)
         myWriter.close()
         println("Successfully wrote to the file.")
