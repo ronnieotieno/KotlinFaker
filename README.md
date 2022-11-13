@@ -1,3 +1,3 @@
 # KotlinFaker
 
-Trying to generate fake date based on Kotlin data class provided.
+Trying to generate fake data based on Kotlin data class provided.
